@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Strona Główna - Wędkarstwo</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #fdf6f0;
+      color: #333;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      text-align: center;
+    }
+   header {
+      background-color: #a3d2ca;
+      color: #056676;
+      padding: 1rem;
+      font-family: 'Georgia', serif;
+    }
+    nav {
+      display: flex;
+      justify-content: center;
+      background: #eaf4f4;
+      padding: 1rem;
+      flex-wrap: wrap;
+    }
+    nav a {
+      color: #056676;
+      margin: 0.5rem;
+      text-decoration: none;
+      font-weight: bold;
+      font-family: 'Trebuchet MS', sans-serif;
+      padding: 0.5rem 1rem;
+      border-radius: 5px;
+      transition: background-color 0.3s, color 0.3s;
+    }
+    nav a:hover {
+      background-color: #d1c4e9;
+      color: #4a148c;
+    }
+    main {
+      flex: 1;
+      display: flex;
+      flex-direction: row;
+      padding: 2rem;
+      gap: 2rem;
+    }
+    .content { flex: 3; }
+    aside {
+      flex: 1;
+      max-width: 250px;
+      background-color: #fff;
+      border-left: 2px solid #c3dfe0;
+      padding: 1rem;
+      font-size: 0.9rem;
+      text-align: left;
+    }
+    footer {
+      background-color: #c3dfe0;
+      text-align: center;
+      padding: 1rem;
+      margin-top: auto;
+    }
+    .carousel {
+      position: relative;
+      width: 100%;
+      max-width: 900px;
+      height: 450px;
+      margin: 2rem auto;
+      overflow: hidden;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      background-color: #fff;
+    }
+    .slides {
+      display: flex;
+      transition: transform 0.5s ease-in-out;
+      height: 100%;
+    }
+    .slides img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      flex: 0 0 100%;
+    }
+    .carousel button {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(0,0,0,0.3);
+      color: #fff;
+      border: none;
+      padding: 0.5rem 1rem;
+      cursor: pointer;
+    }
+    .prev { left: 10px; }
+    .next { right: 10px; }
+    canvas {
+      display: block;
+      margin: 10px auto;
+      background: #fdf6f0;
+    }
+    @media (max-width: 480px) {
+      nav { flex-direction: column; }
+      main { flex-direction: column; }
+      aside { max-width: 100%; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Wędkarstwo to moja pasja!</h1>
+  </header>
+
+  <nav>
+    <a href="index.html">Strona Główna</a>
+    <a href="formularz.html">Formularz</a>
+    <a href="mapa.html">Mapa firmy</a>
+    <a href="gatunkiryb.html">Podział ryb</a>
+    <a href="kalkulator.html">Kalkulatory wędkarskie</a>
+    <a href="Grarybki.html">Spadające rybki-gra</a>
+    <a href="prezentacja.html">Prezentacja</a>
+    <a href="rybyswiata.html">Największe ryby</a>
+    <a href="wyprawka.html">Niebędnik wędkarski</a>
+    <a href="jeziora.html">Jeziora i łowiska</a>
+  </nav>
+
+  <main>
+    <div class="content">
+      <h2>Witaj na mojej stronie poświęconej wędkarstwu!</h2>
+      <p>Znajdziesz tu wiele ciekawych materiałów o rybach, technikach łowienia i nie tylko.</p>
+
+      <div class="carousel">
+        <div class="slides" id="slideBox">
+          <img src="photo/obraz1.jpg" alt="Obraz 1">
+          <img src="photo/obraz2.jpg" alt="Obraz 2">
+          <img src="photo/obraz3.jpg" alt="Obraz 3">
+          <img src="photo/obraz4.jpg" alt="Obraz 4">
+          <img src="photo/obraz5.jpg" alt="Obraz 5">
+        </div>
+        <button class="prev" onclick="moveSlide(-1)">&#10094;</button>
+        <button class="next" onclick="moveSlide(1)">&#10095;</button>
+      </div>
+    </div>
+
+    <aside>
+      <div><strong>Aktualna data:</strong> <span id="date"></span></div>
+      <div><strong>Zegar cyfrowy:</strong> <span id="clock"></span></div>
+      <canvas id="canvasClock" width="220" height="220"></canvas>
+      <div><strong>Licznik odwiedzin:</strong> <span id="visits"></span></div>
+      <div><strong>Czas spędzony na stronie:</strong> <span id="czas">0s</span></div>
+    </aside>
+  </main>
+
+  <footer>
+    <p>&copy; Projekt strony internetowej - Mikołaj Maślankiewicz 161795 (TIiSKwE, Energetyka)</p>
+  </footer>
+
+  <script>
+    // SLIDER
+    let currentSlide = 0;
+    const slides = document.getElementById('slideBox');
+    const totalSlides = slides.children.length;
+    function moveSlide(dir) {
+      currentSlide = (currentSlide + dir + totalSlides) % totalSlides;
+      slides.style.transform = `translateX(-${currentSlide * 100}%)`;
+    }
+    setInterval(() => moveSlide(1), 5000);
+
+    // DATA I ZEGAR CYFROWY
+    function updateDateTime() {
+      const now = new Date();
+      document.getElementById("date").textContent = now.toLocaleDateString();
+      document.getElementById("clock").textContent = now.toLocaleTimeString();
+    }
+    setInterval(updateDateTime, 1000);
+    updateDateTime();
+
+    // LICZNIK ODWIEDZIN
+    let visits = localStorage.getItem("visitCount") || 0;
+    visits++;
+    localStorage.setItem("visitCount", visits);
+    document.getElementById("visits").textContent = visits;
+
+    // CZAS NA STRONIE
+    let startTime = Date.now();
+    let totalTime = parseInt(localStorage.getItem('timeSpent')) || 0;
+    function updateTimer() {
+      let now = Date.now();
+      let timeSpent = Math.floor((now - startTime) / 1000) + totalTime;
+      const min = Math.floor(timeSpent / 60);
+      const sec = timeSpent % 60;
+      document.getElementById('czas').textContent = `${min}m ${sec}s`;
+    }
+    setInterval(updateTimer, 1000);
+    window.addEventListener('beforeunload', () => {
+      const now = Date.now();
+      const updatedTime = Math.floor((now - startTime) / 1000) + totalTime;
+      localStorage.setItem('timeSpent', updatedTime);
+    });
+
+    // ZEGAR ANALOGOWY NA CANVAS
+    const canvas = document.getElementById("canvasClock");
+    const ctx = canvas.getContext("2d");
+    const clockRadius = canvas.height / 2 * 0.90;
+    ctx.translate(canvas.width / 2, canvas.height / 2);
+
+    function drawClock() {
+      ctx.clearRect(-canvas.width/2, -canvas.height/2, canvas.width, canvas.height);
+      drawFace(ctx, clockRadius);
+      drawNumbers(ctx, clockRadius);
+      drawTime(ctx, clockRadius);
+    }
+
+    function drawFace(ctx, r) {
+      ctx.beginPath();
+      ctx.arc(0, 0, r, 0, 2 * Math.PI);
+      ctx.fillStyle = "#fff";
+      ctx.fill();
+      ctx.strokeStyle = "#333";
+      ctx.lineWidth = r * 0.05;
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.arc(0, 0, r * 0.05, 0, 2 * Math.PI);
+      ctx.fillStyle = "#056676";
+      ctx.fill();
+    }
+
+    function drawNumbers(ctx, r) {
+      ctx.font = `${r * 0.15}px Arial`;
+      ctx.textBaseline = "middle";
+      ctx.textAlign = "center";
+      for (let num = 1; num <= 12; num++) {
+        let ang = num * Math.PI / 6;
+        let x = r * 0.8 * Math.sin(ang);
+        let y = -r * 0.8 * Math.cos(ang);
+        ctx.fillStyle = "#056676";
+        ctx.fillText(num.toString(), x, y);
+      }
+    }
+
+    function drawTime(ctx, r) {
+      const now = new Date();
+      let h = now.getHours() % 12;
+      let m = now.getMinutes();
+      let s = now.getSeconds();
+      // godzinowa
+      let hourAng = (h + m/60) * Math.PI / 6;
+      drawHand(ctx, hourAng, r * 0.5, r * 0.07);
+      // minutowa
+      let minAng = (m + s/60) * Math.PI / 30;
+      drawHand(ctx, minAng, r * 0.8, r * 0.05);
+      // sekundowa
+      let secAng = s * Math.PI / 30;
+      drawHand(ctx, secAng, r * 0.9, r * 0.02);
+    }
+
+    function drawHand(ctx, pos, length, width) {
+      ctx.beginPath();
+      ctx.lineWidth = width;
+      ctx.lineCap = "round";
+      ctx.moveTo(0, 0);
+      ctx.rotate(pos);
+      ctx.lineTo(0, -length);
+      ctx.stroke();
+      ctx.rotate(-pos);
+    }
+
+    setInterval(drawClock, 1000);
+    drawClock();
+  </script>
+</body>
+</html>
