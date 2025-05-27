@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gra o Rybkach</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #fdf6f0;
+      color: #333;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      text-align: center;
+    }
+
+    header {
+      background-color: #a3d2ca;
+      color: #056676;
+      padding: 1rem;
+      font-family: 'Georgia', serif;
+    }
+
+    nav {
+      display: flex;
+      justify-content: center;
+      background: #eaf4f4;
+      padding: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    nav a {
+      color: #056676;
+      margin: 0.5rem;
+      text-decoration: none;
+      font-weight: bold;
+      font-family: 'Trebuchet MS', sans-serif;
+      padding: 0.5rem 1rem;
+      border-radius: 5px;
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    nav a:hover {
+      background-color: #d1c4e9;
+      color: #4a148c;
+    }
+
+    main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 2rem;
+      gap: 2rem;
+    }
+
+    #gameCanvas {
+      border: 2px solid #333;
+      background-color: #f0f8ff;
+    }
+
+    .score {
+      font-size: 1.5rem;
+      margin: 10px 0;
+    }
+
+    .controls {
+      margin-top: 20px;
+    }
+
+    footer {
+      background-color: #c3dfe0;
+      text-align: center;
+      padding: 1rem;
+      margin-top: auto;
+    }
+
+    /* Styl dla przycisków start i restart */
+    .btn {
+      background-color: #056676;
+      color: #fff;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 1rem;
+      margin: 10px;
+      transition: background-color 0.3s;
+    }
+
+    .btn:hover {
+      background-color: #a3d2ca;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+
+    
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Gra o Rybkach</h1>
+  </header>
+
+  <!-- Nawigacja górna -->
+  <nav>
+    <a href="Stronaglowna.html">Strona Główna</a>
+    <a href="formularz.html">Formularz</a>
+     <a href="mapa.html">Mapa firmy</a>
+    <a href="gatunkiryb.html">Podział ryb</a>
+    <a href="kalkulator.html">Kalkulatory wędkarskie</a>
+    <a href="Grarybki.html">Spadające rybki-gra</a>
+    <a href="prezentacja.html">Prezentacja</a>
+    <a href="rybyswiata.html">Największe ryby</a>
+    <a href="wyprawka.html">Niebędnik wędkarski</a>
+    <a href="jeziora.html">Jeziora i łowiska</a>
+  </nav>
+
+  <!-- Sekcja menu -->
+  <div class="menu-container" id="mainMenu">
+    <h2>Wybierz opcję</h2>
+    <button class="btn" id="startButton">Start</button>
+    <button class="btn" id="instructionsButton">Instrukcje</button>
+  </div>
+
+  <!-- Sekcja Instrukcji -->
+  <div class="menu-container hidden" id="instructionsMenu">
+    <h1>Instrukcje</h1>
+    <p>Kontroluj wędkę strzałkami w lewo i prawo, aby złapać spadające rybki!</p>
+    <button class="btn" id="backButton">Wróć do menu</button>
+  </div>
+
+  <!-- Gra -->
+  <div class="game-container hidden" id="gameContainer">
+    <canvas id="gameCanvas" width="600" height="400"></canvas>
+    <div id="score">Punkty: 0</div>
+    <button class="btn" id="restartButton">Restart</button>
+    <div id="gameOverText" class="hidden">Koniec gry! Twoje punkty: 0</div>
+  </div>
+
+  <script>
+  const startButton = document.getElementById('startButton');
+  const instructionsButton = document.getElementById('instructionsButton');
+  const backButton = document.getElementById('backButton');
+  const restartButton = document.getElementById('restartButton');
+  const mainMenu = document.getElementById('mainMenu');
+  const instructionsMenu = document.getElementById('instructionsMenu');
+  const gameContainer = document.getElementById('gameContainer');
+  const canvas = document.getElementById('gameCanvas');
+  const ctx = canvas.getContext('2d');
+  const scoreDisplay = document.getElementById('score');
+  const gameOverText = document.getElementById('gameOverText');
+
+  let score = 0;
+  let fishSpeed = 1;
+  let fishSize = 30;
+  let hookWidth = 100;
+  let hookHeight = 10;
+  let hookX = (canvas.width - hookWidth) / 2;
+  let hookY = canvas.height - hookHeight - 10;
+  let leftKeyPressed = false;
+  let rightKeyPressed = false;
+  let gameOver = false;
+  let fishArray = [];
+  let animationId = null; 
+
+  function drawFish(fish) {
+    ctx.fillStyle = 'green';
+    ctx.beginPath();
+    ctx.ellipse(fish.x + fishSize / 2, fish.y + fishSize / 2, fishSize / 2, fishSize / 4, 0, 0, Math.PI * 2);
+    ctx.fill();
+
+    ctx.fillStyle = 'orange';
+    ctx.beginPath();
+    ctx.moveTo(fish.x + fishSize / 2, fish.y + fishSize / 2);
+    ctx.lineTo(fish.x + fishSize, fish.y + fishSize / 2 - 10);
+    ctx.lineTo(fish.x + fishSize, fish.y + fishSize / 2 + 10);
+    ctx.fill();
+  }
+
+  function drawHook() {
+    ctx.fillStyle = 'red';
+    ctx.fillRect(hookX, hookY, hookWidth, hookHeight);
+  }
+
+  function drawScore() {
+    scoreDisplay.textContent = `Punkty: ${score}`;
+  }
+
+  function gameOverScreen() {
+    gameOverText.textContent = `Koniec gry! Twoje punkty: ${score}`;
+    gameOverText.style.display = 'block';
+  }
+
+  function moveFish() {
+    for (let i = 0; i < fishArray.length; i++) {
+      fishArray[i].y += fishSpeed;
+
+      if (fishArray[i].y > canvas.height) {
+        gameOver = true;
+      }
+    }
+  }
+
+  function checkCollision(fish) {
+    if (fish.y + fishSize > hookY && fish.y < hookY + hookHeight) {
+      if (fish.x + fishSize > hookX && fish.x < hookX + hookWidth) {
+        score++;
+        fishArray.splice(fishArray.indexOf(fish), 1);
+      }
+    }
+  }
+
+  function spawnFish() {
+    if (fishArray.length === 0) {
+      const fishX = Math.random() * (canvas.width - fishSize);
+      const fishY = -fishSize;
+      fishArray.push({ x: fishX, y: fishY });
+    }
+  }
+
+  function updateGame() {
+    if (gameOver) {
+      gameOverScreen();
+      return;
+    }
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    moveFish();
+    fishArray.forEach(fish => {
+      drawFish(fish);
+      checkCollision(fish);
+    });
+
+    drawHook();
+    drawScore();
+
+    if (leftKeyPressed && hookX > 0) {
+      hookX -= 5;
+    }
+    if (rightKeyPressed && hookX + hookWidth < canvas.width) {
+      hookX += 5;
+    }
+
+    spawnFish();
+    animationId = requestAnimationFrame(updateGame);
+  }
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowLeft') {
+      leftKeyPressed = true;
+    } else if (e.key === 'ArrowRight') {
+      rightKeyPressed = true;
+    }
+  });
+
+  document.addEventListener('keyup', (e) => {
+    if (e.key === 'ArrowLeft') {
+      leftKeyPressed = false;
+    } else if (e.key === 'ArrowRight') {
+      rightKeyPressed = false;
+    }
+  });
+
+  startButton.addEventListener('click', () => {
+    mainMenu.style.display = 'none';
+    gameContainer.style.display = 'block';
+    score = 0;
+    gameOver = false;
+    fishArray = [];
+    hookX = (canvas.width - hookWidth) / 2;
+    gameOverText.style.display = 'none';
+    updateGame();
+  });
+
+  instructionsButton.addEventListener('click', () => {
+    mainMenu.style.display = 'none';
+    instructionsMenu.style.display = 'block';
+  });
+
+  backButton.addEventListener('click', () => {
+    instructionsMenu.style.display = 'none';
+    mainMenu.style.display = 'block';
+  });
+
+  restartButton.addEventListener('click', () => {
+    cancelAnimationFrame(animationId); // <- Zatrzymaj poprzednią animację
+    score = 0;
+    gameOver = false;
+    fishArray = [];
+    hookX = (canvas.width - hookWidth) / 2;
+    hookY = canvas.height - hookHeight - 10;
+    gameOverText.style.display = 'none';
+    updateGame(); // Uruchom nową animację
+  });
+</script>
+
+<footer>
+    <p>&copy; Projekt strony internetowej - Mikołaj Maślankiewicz 161795 (TIiSKwE, Energetyka)</p>
+  </footer>
+
+</body>
+</html>

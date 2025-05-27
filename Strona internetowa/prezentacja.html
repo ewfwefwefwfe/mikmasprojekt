@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Prezentacja o Wędkarstwie</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #fdf6f0;
+      color: #333;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      text-align: center;
+    }
+
+    header {
+      background-color: #a3d2ca;
+      color: #056676;
+      padding: 1rem;
+      font-family: 'Georgia', serif;
+    }
+
+    nav {
+      display: flex;
+      justify-content: center;
+      background: #eaf4f4;
+      padding: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    nav a {
+      color: #056676;
+      margin: 0.5rem;
+      text-decoration: none;
+      font-weight: bold;
+      font-family: 'Trebuchet MS', sans-serif;
+      padding: 0.5rem 1rem;
+      border-radius: 5px;
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    nav a:hover {
+      background-color: #d1c4e9;
+      color: #4a148c;
+    }
+
+    .slide-container {
+      width: 90%;
+    max-width: 960px;
+    margin: 2rem auto;
+    background: #eaf4f4;
+    border-radius: 10px;
+    padding: 2rem;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    flex-direction: column;
+    }
+
+    .slide {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      animation: fade 0.5s ease-in-out;
+    }
+
+    .slide.active {
+      display: flex;
+    }
+
+    .slide img {
+     
+      max-width: 80%;
+      height: auto;
+      border-radius: 10px;
+      margin-top: 1rem;
+      box-shadow: 0 0 5px rgba(0,0,0,0.1);
+    }
+
+  footer {
+  background-color: #c3dfe0;
+  padding: 1rem;
+  margin-top: auto;
+  width: 100%;
+  text-align: center;
+}
+
+footer p {
+  text-align: center;
+  margin: 0 auto;
+}
+
+
+
+    h1 {
+      color: #056676;
+      margin-bottom: 1rem;
+    }
+
+    p {
+      font-size: 1.1rem;
+      max-width: 700px;
+      line-height: 1.6;
+    }
+
+    .navigation-hint {
+      position: absolute;
+      bottom: 10px;
+      font-size: 0.9rem;
+      color: #666;
+    }
+
+    @keyframes fade {
+      from { opacity: 0; transform: translateX(20px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+
+@media (max-width: 480px) {
+  .slide-container {
+    padding: 1rem;
+  }
+
+  nav {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  nav a {
+    width: 90%;
+    text-align: center;
+  }
+
+  p {
+    font-size: 1rem;
+    padding: 0 1rem;
+  }
+
+  h1 {
+    font-size: 1.5rem;
+  }
+
+  .slide img {
+    max-width: 100%;
+  }
+}
+
+
+
+
+
+
+ 
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Prezentacja: Wędkarstwo</h1>
+  </header>
+
+  <nav>
+    <a href="Stronaglowna.html">Strona Główna</a>
+    <a href="formularz.html">Formularz</a>
+    <a href="mapa.html">Mapa firmy</a>
+    <a href="gatunkiryb.html">Podział ryb</a>
+    <a href="kalkulator.html">Kalkulatory wędkarskie</a>
+    <a href="Grarybki.html">Spadające rybki-gra</a>
+    <a href="prezentacja.html">Prezentacja</a>
+    <a href="rybyswiata.html">Największe ryby</a>
+    <a href="wyprawka.html">Niebędnik wędkarski</a>
+    <a href="jeziora.html">Jeziora i łowiska</a>
+  </nav>
+
+  <div class="slide-container">
+    <div class="slide active">
+      <h1>🎣 Wędkarstwo – Pasja i Relaks</h1>
+      <p>Wędkarstwo to sztuka, spokój i bliskość natury. Hobby dla każdego – niezależnie od wieku.</p>
+      <img src="photo/obraz31.jpg" alt="Wędkarstwo 1">
+    </div>
+    <div class="slide">
+      <h1>🌍 Rodzaje Wędkarstwa</h1>
+      <p>Spławikowe, spinningowe, gruntowe, muchowe, morskie – każda metoda to inne doświadczenie.</p>
+      <img src="photo/obraz32.jpg" alt="Wędkarstwo 2">
+    </div>
+    <div class="slide">
+      <h1>🐟 Popularne Ryby</h1>
+      <p>Szczupak, Karp, Sandacz, Sum, Leszcz – Polska ma wiele ciekawych gatunków do złowienia!</p>
+      <img src="photo/obraz33.jpg" alt="Wędkarstwo 3">
+    </div>
+    <div class="slide">
+      <h1>🧰 Sprzęt Wędkarski</h1>
+      <p>Wędki, przynęty, kołowrotki, podbieraki, zanęty – wszystko, co potrzebne w arsenale wędkarza.</p>
+      <img src="photo/obraz34.jpg" alt="Wędkarstwo 4">
+    </div>
+    <div class="slide">
+      <h1>📍 Miejsca do Łowienia</h1>
+      <p>Rzeki, jeziora, stawy, morza – każdy znajdzie swoje idealne miejsce do łowienia ryb.</p>
+      <img src="photo/obraz35.jpg" alt="Wędkarstwo 5">
+    </div>
+    <div class="slide">
+      <h1>📜 Przepisy i Kultura</h1>
+      <p>Poszanowanie natury, zasady etyczne, karta wędkarska i zrównoważony połów to podstawa.</p>
+      <img src="photo/obraz36.jpg" alt="Wędkarstwo 6">
+    </div>
+    <div class="slide">
+      <h1>🏁 Podsumowanie</h1>
+      <p>Wędkarstwo to nie tylko łowienie – to styl życia, spokój i kontakt z naturą.</p>
+      <img src="photo/obraz37.jpg" alt="Wędkarstwo 7">
+    </div>
+
+    <div class="navigation-hint">Użyj klawiszy ⬅️ ➡️ aby przechodzić między slajdami</div>
+  </div>
+
+  <footer>
+    <p>&copy; Projekt strony internetowej - Mikołaj Maślankiewicz 161795 (TIiSKwE, Energetyka)</p>
+  </footer>
+
+  <script>
+    const slides = document.querySelectorAll('.slide');
+    let current = 0;
+
+    function showSlide(i) {
+      slides.forEach((s, index) => {
+        s.classList.toggle('active', index === i);
+      });
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight') {
+        current = (current + 1) % slides.length;
+        showSlide(current);
+      } else if (e.key === 'ArrowLeft') {
+        current = (current - 1 + slides.length) % slides.length;
+        showSlide(current);
+      }
+    });
+  </script>
+</body>
+</html>

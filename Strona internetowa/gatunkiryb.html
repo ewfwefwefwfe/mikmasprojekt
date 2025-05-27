@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gatunki ryb - Wędkarstwo</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #fdf6f0;
+      color: #333;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      text-align: center;
+    }
+
+    header {
+      background-color: #a3d2ca;
+      color: #056676;
+      padding: 1rem;
+      font-family: 'Georgia', serif;
+    }
+
+    nav {
+      display: flex;
+      justify-content: center;
+      background: #eaf4f4;
+      padding: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    nav a {
+      color: #056676;
+      margin: 0.5rem;
+      text-decoration: none;
+      font-weight: bold;
+      font-family: 'Trebuchet MS', sans-serif;
+      padding: 0.5rem 1rem;
+      border-radius: 5px;
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    nav a:hover {
+      background-color: #d1c4e9;
+      color: #4a148c;
+    }
+
+    main {
+      padding: 2rem;
+      max-width: 1200px;
+      margin: auto;
+    }
+
+    table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 2rem;
+  font-size: 1.2rem; /* większy rozmiar */
+  overflow-x: auto;
+  display: block;
+}
+
+th, td {
+  border: 1px solid #ccc;
+  padding: 12px 16px;
+  text-align: center;
+}
+
+
+    th {
+      background-color: #eaf4f4;
+      color: #056676;
+    }
+
+    .highlighted td {
+      background-color: #e1bee7 !important;
+    }
+
+    #fishImageBox {
+      margin-top: 30px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .image-frame {
+      width: 100%;
+      max-width: 500px;
+      aspect-ratio: 3 / 2;
+      border: 4px solid #555;
+      border-radius: 14px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.25);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: #f2f2f2;
+    }
+
+    .image-frame img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      border-radius: 10px;
+      display: none;
+    }
+
+    footer {
+      background-color: #c3dfe0;
+      text-align: center;
+      padding: 1rem;
+      margin-top: auto;
+    }
+
+    @media (max-width: 480px) {
+      nav {
+        flex-direction: column;
+      }
+
+      .image-frame {
+        max-width: 90%;
+        aspect-ratio: 3 / 2;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Gatunki ryb w Polsce</h1>
+  </header>
+
+  <nav>
+    <a href="Stronaglowna.html">Strona Główna</a>
+    <a href="formularz.html">Formularz</a>
+    <a href="mapa.html">Mapa firmy</a>
+    <a href="gatunkiryb.html">Podział ryb</a>
+    <a href="kalkulator.html">Kalkulatory wędkarskie</a>
+    <a href="Grarybki.html">Spadające rybki-gra</a>
+    <a href="prezentacja.html">Prezentacja</a>
+    <a href="rybyswiata.html">Największe ryby</a>
+    <a href="wyprawka.html">Niebędnik wędkarski</a>
+    <a href="jeziora.html">Jeziora i łowiska</a>
+  </nav>
+
+  <main>
+    <h2>Lista ryb – najedź, aby zobaczyć zdjęcie</h2>
+    <table>
+      <thead>
+        <tr>
+          <th rowspan="2">Gatunek</th>
+          <th colspan="2">Długość życia (lata)</th>
+          <th rowspan="2">Rozmiar (cm)</th>
+          <th rowspan="2">Okres ochronny</th>
+          <th colspan="2">Woda</th>
+          <th rowspan="2">Styl życia</th>
+        </tr>
+        <tr>
+          <th>Min</th>
+          <th>Max</th>
+          <th>Słodkowodne</th>
+          <th>Słonowodne</th>
+        </tr>
+      </thead>
+      <tbody id="fishTableBody"></tbody>
+    </table>
+
+    <div id="fishImageBox">
+      <div class="image-frame">
+        <img id="fishImg" src="" alt="Zdjęcie ryby">
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <p>&copy; Projekt strony internetowej - Mikołaj Maşlankiewicz 161795 (TIiSKwE, Energetyka)</p>
+  </footer>
+
+  <script>
+    const fishData = [
+      { gatunek: "Szczupak", zycie: 15, rozmiar: 100, slodka: true, slona: false, ochrona: "01.03–30.04", styl: "Drapieżnik" },
+      { gatunek: "Karp", zycie: 20, rozmiar: 60, slodka: true, slona: false, ochrona: "Brak", styl: "Dnożerny" },
+      { gatunek: "Łosoś", zycie: 6, rozmiar: 120, slodka: true, slona: true, ochrona: "01.10–31.12", styl: "Migrujący" },
+      { gatunek: "Sandacz", zycie: 14, rozmiar: 70, slodka: true, slona: false, ochrona: "01.04–31.05", styl: "Drapieżnik" },
+      { gatunek: "Dorsz", zycie: 25, rozmiar: 100, slodka: false, slona: true, ochrona: "Sezonowy", styl: "Drapieżnik" },
+      { gatunek: "Węgorz", zycie: 20, rozmiar: 100, slodka: true, slona: true, ochrona: "01.12-31.03", styl: "Migrujący" },
+      { gatunek: "Okoń", zycie: 12, rozmiar: 40, slodka: true, slona: false, ochrona: "Brak", styl: "Drapieżnik" },
+      { gatunek: "Płoć", zycie: 10, rozmiar: 30, slodka: true, slona: false, ochrona: "Brak", styl: "Roślinożerny" },
+      { gatunek: "Flądra", zycie: 8, rozmiar: 50, slodka: false, slona: true, ochrona: "Brak", styl: "Dnożerny" },
+      { gatunek: "Troć wędrowna", zycie: 7, rozmiar: 80, slodka: true, slona: true, ochrona: "01.10–31.12", styl: "Migrujący" }
+    ];
+
+    const tbody = document.getElementById("fishTableBody");
+    const fishImg = document.getElementById("fishImg");
+
+    fishData.forEach((ryba, i) => {
+      const wiersz = document.createElement("tr");
+      wiersz.innerHTML = `
+        <td>${ryba.gatunek}</td>
+        <td>${ryba.zycie - 2}</td>
+        <td>${ryba.zycie}</td>
+        <td>${ryba.rozmiar}</td>
+        <td>${ryba.ochrona}</td>
+        <td>${ryba.slodka ? "✓" : ""}</td>
+        <td>${ryba.slona ? "✓" : ""}</td>
+        <td>${ryba.styl}</td>
+      `;
+
+      wiersz.addEventListener("mouseenter", () => {
+        document.querySelectorAll("tbody tr").forEach(w => w.classList.remove("highlighted"));
+        wiersz.classList.add("highlighted");
+        fishImg.src = `photo/obraz${10 + i}.jpg`;
+        fishImg.style.display = "block";
+      });
+
+      wiersz.addEventListener("mouseleave", () => {
+        wiersz.classList.remove("highlighted");
+        fishImg.style.display = "none";
+      });
+
+      tbody.appendChild(wiersz);
+    });
+    
+  </script>
+</body>
+</html>
